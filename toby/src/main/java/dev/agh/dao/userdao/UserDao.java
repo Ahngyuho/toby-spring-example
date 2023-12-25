@@ -2,16 +2,18 @@ package dev.agh.dao.userdao;
 
 import dev.agh.domain.User;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class UserDao {
-    private ConnectionMaker connectionMaker;
+    private DataSource dataSource;
 
-    public UserDao(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = connectionMaker.getConnection();
+        Connection c = dataSource.getConnection();
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id,name,password) values (?,?,?)"
         );
@@ -27,7 +29,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = connectionMaker.getConnection();
+        Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?"

@@ -10,6 +10,14 @@ repositories {
 }
 
 dependencies {
+//    implementation 'net.sourceforge.cglib:com.springsource.net.sf.cglib:2.2.0'
+    implementation 'cglib:cglib:3.3.0'
+    implementation 'org.springframework:spring-context:3.0.7.RELEASE'
+    implementation 'org.springframework:spring-asm:3.0.7.RELEASE'
+    implementation 'org.springframework:spring-beans:3.0.7.RELEASE'
+    implementation 'org.springframework:spring-core:3.0.7.RELEASE'
+    implementation 'org.springframework:spring-expression:3.0.7.RELEASE'
+
     implementation 'com.mysql:mysql-connector-j:8.2.0'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     testImplementation platform('org.junit:junit-bom:5.9.1')

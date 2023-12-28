@@ -1,9 +1,11 @@
 import dev.agh.dao.userdao.DaoFactory;
 import dev.agh.dao.userdao.UserDao;
 import dev.agh.domain.User;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
@@ -12,12 +14,17 @@ import static org.assertj.core.api.Assertions.*;
 
 
 public class UserDaoTest {
+    private static UserDao dao;
+
+    @BeforeAll
+    public static void setUp() throws SQLException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        dao = context.getBean("userDao", UserDao.class);
+        dao.deleteAll();
+    }
     @Test
     public void addAndGet() throws SQLException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 
-        UserDao dao = context.getBean("userDao", UserDao.class);
-        dao.deleteAll();
         assertThat(dao.getCount()).isEqualTo(0);
 
         User user = new User();
@@ -36,9 +43,6 @@ public class UserDaoTest {
 
     @Test
     public void count() throws SQLException{
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao dao = context.getBean("userDao", UserDao.class);
-
         User user1 = new User("1", "1", "1");
         User user2 = new User("2", "2", "2");
         User user3 = new User("3", "3", "3");
@@ -59,10 +63,6 @@ public class UserDaoTest {
 
     @Test
     public void getUserFailure() throws SQLException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao dao = context.getBean("userDao", UserDao.class);
-
-        dao.deleteAll();
         assertThat(dao.getCount()).isEqualTo(0);
 
         Throwable t = catchThrowable(() -> dao.get("unknown_id"));

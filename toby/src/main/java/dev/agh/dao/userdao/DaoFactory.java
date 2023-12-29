@@ -1,5 +1,6 @@
 package dev.agh.dao.userdao;
 
+import dev.agh.dao.JdbcContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -12,6 +13,7 @@ public class DaoFactory {
     public UserDao userDao(){
         UserDao userDao = new UserDao();
         userDao.setDataSource(dataSource());
+        userDao.setJdbcContext(jdbcContext());
         return userDao;
     }
 
@@ -30,5 +32,12 @@ public class DaoFactory {
         dataSource.setPassword("1234");
 
         return dataSource;
+    }
+
+    @Bean
+    public JdbcContext jdbcContext() {
+        JdbcContext jdbcContext = new JdbcContext();
+        jdbcContext.setDataSource(dataSource());
+        return jdbcContext;
     }
 }

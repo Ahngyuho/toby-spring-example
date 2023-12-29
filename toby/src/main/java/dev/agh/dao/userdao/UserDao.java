@@ -3,6 +3,8 @@ package dev.agh.dao.userdao;
 import dev.agh.dao.JdbcContext;
 import dev.agh.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -11,7 +13,11 @@ public class UserDao {
     private JdbcContext jdbcContext;
     private DataSource dataSource;
 
+    private JdbcTemplate jdbcTemplate;
+
     public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+
         this.dataSource = dataSource;
     }
 
@@ -67,7 +73,14 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
-        this.jdbcContext.executeSql("delete from users");
+        this.jdbcTemplate.update(
+                new PreparedStatementCreator() {
+                    @Override
+                    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                        return con.prepareStatement("delete from users");
+                    }
+                }
+        );
     }
 
     public int getCount() throws SQLException{

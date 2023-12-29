@@ -73,14 +73,7 @@ public class UserDao {
     }
 
     public void deleteAll() throws SQLException {
-        this.jdbcTemplate.update(
-                new PreparedStatementCreator() {
-                    @Override
-                    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                        return con.prepareStatement("delete from users");
-                    }
-                }
-        );
+        this.jdbcTemplate.update("delete from users");
     }
 
     public int getCount() throws SQLException{

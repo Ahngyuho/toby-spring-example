@@ -2,6 +2,7 @@ import dev.agh.dao.userdao.DaoFactory;
 import dev.agh.dao.userdao.UserDao;
 import dev.agh.domain.User;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,14 +15,22 @@ import static org.assertj.core.api.Assertions.*;
 
 
 public class UserDaoTest {
-    private static UserDao dao;
+    private UserDao dao;
+    private User user1;
+    private User user2;
+    private User user3;
 
-    @BeforeAll
-    public static void setUp() throws SQLException {
+    @BeforeEach
+    public void setUp() throws SQLException {
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         dao = context.getBean("userDao", UserDao.class);
         dao.deleteAll();
+
+        this.user1 = new User("1", "user1", "user1");
+        this.user2 = new User("2", "user2", "user2");
+        this.user3 = new User("3", "user3", "user3");
     }
+
     @Test
     public void addAndGet() throws SQLException {
 
@@ -68,4 +77,6 @@ public class UserDaoTest {
         Throwable t = catchThrowable(() -> dao.get("unknown_id"));
         assertThat(t).isInstanceOf(EmptyResultDataAccessException.class);
     }
+
+
 }

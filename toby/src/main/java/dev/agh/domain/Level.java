@@ -1,11 +1,17 @@
 package dev.agh.domain;
 
 public enum Level {
-    BASIC(1),SLIVER(2),GOLD(3);
+    GOLD(3,null),SLIVER(2,GOLD),BASIC(1,SLIVER);
     private final int value;
+    private final Level next;
 
-    Level(int value) {
+    Level(int value,Level next) {
         this.value = value;
+        this.next = next;
+    }
+
+    public Level nextLevel() {
+        return this.next;
     }
 
     public int intValue() {

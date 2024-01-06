@@ -21,7 +21,7 @@ public class UserDaoTest {
     private User user3;
 
     @BeforeEach
-    public void setUp() throws SQLException {
+    public void setUp() {
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         dao = context.getBean("userDao", UserDaoJdbc.class);
         dao.deleteAll();

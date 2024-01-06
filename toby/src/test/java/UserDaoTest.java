@@ -93,7 +93,22 @@ public class UserDaoTest {
         checkSameUser(user2, users3.get(1));
         checkSameUser(user3, users3.get(2));
 
+    }
 
+    @Test
+    public void update() {
+        dao.deleteAll();
+        dao.add(user1);
+
+        user1.setName("updatedUser1");
+        user1.setPassword("update");
+        user1.setLevel(Level.GOLD);
+        user1.setLogin(100);
+        user1.setRecommend(999);
+        dao.update(user1);
+
+        User user1Update = dao.get(user1.getId());
+        checkSameUser(user1,user1Update);
     }
 
     private void checkSameUser(User user1, User user2) {

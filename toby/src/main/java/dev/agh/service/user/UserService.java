@@ -4,7 +4,6 @@ import dev.agh.dao.userdao.UserDao;
 import dev.agh.domain.Level;
 import dev.agh.domain.User;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.sql.DataSource;
@@ -24,6 +23,7 @@ public class UserService {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
 
     public void upgradeLevels() throws Exception {
         TransactionSynchronizationManager.initSynchronization();

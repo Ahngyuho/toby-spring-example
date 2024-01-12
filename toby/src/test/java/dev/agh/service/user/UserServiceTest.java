@@ -3,10 +3,8 @@ package dev.agh.service.user;
 import dev.agh.dao.userdao.UserDao;
 import dev.agh.domain.Level;
 import dev.agh.domain.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -33,6 +31,7 @@ class UserServiceTest {
 
         userDao.deleteAll();
         this.dataSource = context.getBean("dataSource", DataSource.class);
+        userService.setDataSource(this.dataSource);
 
         users = Arrays.asList(
                 new User("test1", "test1", "p1", Level.BASIC, MIN_LOGOUT_FRO_SILVER - 1, 0),

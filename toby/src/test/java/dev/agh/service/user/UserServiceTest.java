@@ -31,7 +31,6 @@ class UserServiceTest {
 
         userDao.deleteAll();
         this.dataSource = context.getBean("dataSource", DataSource.class);
-        userService.setDataSource(this.dataSource);
 
         users = Arrays.asList(
                 new User("test1", "test1", "p1", Level.BASIC, MIN_LOGOUT_FRO_SILVER - 1, 0),

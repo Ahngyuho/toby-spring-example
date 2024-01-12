@@ -6,9 +6,11 @@ import dev.agh.domain.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +23,7 @@ class UserServiceTest {
     UserService userService;
 
     List<User> users;
+    DataSource dataSource;
 
     @BeforeEach
     public void setup() {
@@ -29,6 +32,7 @@ class UserServiceTest {
         userService = context.getBean("userService", UserService.class);
 
         userDao.deleteAll();
+        this.dataSource = context.getBean("dataSource", DataSource.class);
 
         users = Arrays.asList(
                 new User("test1", "test1", "p1", Level.BASIC, MIN_LOGOUT_FRO_SILVER - 1, 0),
@@ -40,7 +44,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void upgradeLevels() {
+    public void upgradeLevels() throws Exception{
         userDao.deleteAll();
         for(User user : users) userDao.add(user);
 
@@ -79,9 +83,10 @@ class UserServiceTest {
     }
 
     @Test
-    public void upgradeAllOrNothing() {
+    public void upgradeAllOrNothing() throws Exception{
         UserService testUserService = new TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
+        testUserService.setDataSource(this.dataSource);
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
 
